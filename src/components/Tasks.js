@@ -25,10 +25,14 @@ export default function Tasks( {selectedTab}) {
     return (
         <div className="tasks">
             <h1>{TaskHeader[selectedTab]}</h1>
-            <div className="add-task-btn" onClick={()=>setShowAddTask((prevState)=>!prevState)} >
-                <span className="plus">+</span>
-                <span className="add-task-text">Add Task</span>
-            </div>
+            {
+                selectedTab==="INBOX"? 
+                <div className="add-task-btn" onClick={()=>setShowAddTask((prevState)=>!prevState)} >
+                    <span className="plus">+</span>
+                    <span className="add-task-text">Add Task</span>
+                </div>
+            :null
+            }
             {showAddTask && <AddTask onAddTask={addNewTask} oncancel={()=>setShowAddTask(false)} />}
             {
                 tasks.length>0? <TaskItems selectedTab={selectedTab} tasks={tasks}/>
@@ -92,21 +96,26 @@ const AddTask=({oncancel,onAddTask})=>{
 
 
 const TaskItems=({selectedTab, tasks})=>{
+
+    let taskToRender=[...tasks];
     if(selectedTab==="NEXT_7"){
-        return tasks.filter((task)=>{
+        taskToRender=taskToRender.filter((task)=>{
             return isAfter(task.date,new Date()) && isBefore(task.date, addDays(new Date(),7));
-        }).map((task,i)=>{
-            return <p key={i}>{task.text}{dateFnsFormat(new Date(task.date),FORMAT)}</p>
         });
     }
     if(selectedTab==="TODAY"){
-        return tasks.filter((task)=>{
+        taskToRender=taskToRender.filter((task)=>{
             return  isToday(task.date);
-        }).map((task,i)=>{
-            return <p key={i}>{task.text}{dateFnsFormat(new Date(task.date),FORMAT)}</p>
         });
     }
-    return tasks.map((task,i)=>{
-        return <p key={i}>{task.text}{dateFnsFormat(new Date(task.date),FORMAT)}</p>
-    });
+    return(
+        <div className="task-items-container">{
+            taskToRender.map((task,i)=>{
+                return <div className="task-item" key={i} >
+                    <p>{task.text}</p>
+                    <p>{dateFnsFormat(new Date(task.date),FORMAT)}</p>
+                </div>
+            })
+        }</div>
+    )
 };

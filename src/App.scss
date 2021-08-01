@@ -122,4 +122,16 @@ header{
         }
     }
 
+    .task-items-container{
+        margin-top: 40px;
+        padding: 0 20px;
+        .task-item{
+            display: flex;
+            justify-content: space-between;
+            &:not(:last-child){
+                border-bottom: 1px solid #db4c3f;
+            }
+        }
+    }
+
 }
