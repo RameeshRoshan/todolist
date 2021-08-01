@@ -7,7 +7,7 @@ export default function Content() {
     return (
         <section className="content">
             <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-            <Tasks/>
+            <Tasks selectedTab={selectedTab} />
         </section>
     )
 }
